@@ -175,7 +175,7 @@ public class Rasterizer {
 			}
 			System.out.println(scanLine);
 			for(int i=0; i<toDraw.size(); i++){
-				for(int xi=toDraw.get(i)[0]; xi<=toDraw.get(i)[1]; xi++){
+				for(int xi=toDraw.get(i)[0]; xi<toDraw.get(i)[1]; xi++){
 					C.setPixel(xi,scanLine);
 				}
 			}

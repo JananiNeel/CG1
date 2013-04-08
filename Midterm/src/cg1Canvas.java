@@ -19,7 +19,16 @@ public class cg1Canvas extends simpleCanvas {
     
 	private int m_numPolys = 0;
 	private HashMap<Integer,polygon> polyMap = new HashMap<Integer,polygon>();
+	private Matrix curNormalizeMatrix = null;
+	private Matrix curViewMatrix = null;
+	private polygon clipWindow = null;
+	private float cx0 = 0;
+	private float cx1 = 0;
+	private float cy0 = 0;
+	private float cy1 = 0;
 	Rasterizer R;
+	clipper C;
+	
     /**
      * Constructor
      *
@@ -30,6 +39,7 @@ public class cg1Canvas extends simpleCanvas {
     {
         super (w, h);
         R = new Rasterizer(h);
+        C = new clipper();
         
     }
     
@@ -77,22 +87,37 @@ public class cg1Canvas extends simpleCanvas {
      * draw - Draw the polygon with the given id.  Draw should draw the polygon after applying the 
      *        current transformation on the vertices of the polygon.
      *
-     * @param polyID - the ID of the polygin to be drawn.
+     * @param polyID - the ID of the polygon to be drawn.
      */
     public void draw (int polyID)
     {
     	polygon poly = polyMap.get(polyID);
     	float[] xs = poly.getTransformXs();
-    	int[] x = new int[xs.length];
-    	for(int i=0; i<xs.length; i++){
-    		x[i] = (int)xs[i];
-    	}
     	float[] ys = poly.getTransformYs();
-    	int[] y = new int[ys.length];
-    	for(int i=0; i<ys.length; i++){
-    		y[i] = (int)ys[i];
+    	
+    	polygon normalizedPoly = new polygon(xs, ys, poly.getNs(), curViewMatrix.times(curNormalizeMatrix));
+    	float[] nxs = normalizedPoly.getTransformXs();
+    	float[] nys = normalizedPoly.getTransformYs();
+    	float[] outnxs = new float[50];
+    	float[] outnys = new float[50];
+    	
+    	clipWindow.setTransforms(curViewMatrix.times(curNormalizeMatrix));
+    	float[] cxs = clipWindow.getTransformXs();
+    	float[] cys = clipWindow.getTransformYs();
+    	
+    	int numverticies = C.clipPolygon(normalizedPoly.getNs(),nxs,nys,outnxs,outnys,cxs[0],cys[0],cxs[2],cys[2]);
+    	
+    	int[] x = new int[numverticies];
+    	for(int i=0; i<numverticies; i++){
+    		x[i] = (int)outnxs[i];
     	}
-    	R.drawPolygon(poly.getNs(), x, y, this);
+    	int[] y = new int[numverticies];
+    	for(int i=0; i<numverticies; i++){
+    		y[i] = (int)outnys[i];
+    	}
+    	
+    	
+    	R.drawPolygon(numverticies, x, y, this);
     }
     
     /**
@@ -155,6 +180,15 @@ public class cg1Canvas extends simpleCanvas {
      */
     public void setClipWindow (float bottom, float top, float left, float right)
     {
+    		double[][] normalize = new double[3][];
+    		normalize[0] = new double[]{2/(right-left),0,((-2*left)/(right-left))-1};
+    		normalize[1] = new double[]{0,2/(top-bottom),((-2*bottom)/(top-bottom))-1};
+    		normalize[2] = new double[]{0,0,1};
+    		Matrix normalizeMatrix = new Matrix(normalize);
+    		curNormalizeMatrix = normalizeMatrix;
+    		
+    		clipWindow = new polygon(new float[]{left,right,right,left}, new float[]{bottom,bottom,top,top}, 4, Matrix.identity(3, 3));
+    		
     }
     
     
@@ -170,7 +204,12 @@ public class cg1Canvas extends simpleCanvas {
      */
     public void setViewport (int x, int y, int width, int height)
     {
-    	setSize (width, height);
+    	double[][] view = new double[3][];
+    	view[0] = new double[]{(((width+x)-(x))/2),0,(((width+x)+(x))/2)};
+    	view[1] = new double[]{0,(((height+y)-(y))/2),(((height+y)+(y))/2)};
+    	view[2] = new double[]{0,0,1};
+		Matrix viewMatrix = new Matrix(view);
+		curViewMatrix = viewMatrix;
     }
 
     
