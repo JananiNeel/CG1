@@ -109,17 +109,6 @@ public class Rasterizer {
 			edgeTable.put(ymin, newLinkedList);
 		}
 
-		for(Integer key : edgeTable.keySet()){
-			System.out.print(key + " ");
-			for(Integer[] list : edgeTable.get(key)){
-				System.out.print("[");
-				for(Integer number : list){
-					System.out.print(number+" ");
-				}
-				System.out.print("] ");
-			}
-			System.out.println();
-		}
 		return edgeTable;
 	}
 
@@ -173,9 +162,8 @@ public class Rasterizer {
 				}
 				parity++;
 			}
-			System.out.println(scanLine);
 			for(int i=0; i<toDraw.size(); i++){
-				for(int xi=toDraw.get(i)[0]; xi<=toDraw.get(i)[1]; xi++){
+				for(int xi=toDraw.get(i)[0]; xi<toDraw.get(i)[1]; xi++){
 					C.setPixel(xi,scanLine);
 				}
 			}
