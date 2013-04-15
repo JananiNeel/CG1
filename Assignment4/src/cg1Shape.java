@@ -9,13 +9,7 @@
  *
  */
 
-import java.awt.*;
-import java.nio.*;
 import java.util.ArrayList;
-import java.awt.event.*;
-import javax.media.opengl.*;
-import javax.media.opengl.awt.GLCanvas;
-import java.io.*;
 
 
 public class cg1Shape extends simpleShape
@@ -408,5 +402,62 @@ public class cg1Shape extends simpleShape
 	 */
 	public void makeSphere (float radius, int slices, int stacks)
 	{
+		float a = (float) (2/(1+Math.sqrt(5)));
+		float[] v0 = {0,a,-1};
+		float[] v1 = {-a,1,0};
+		float[] v2 = {a,1,0};
+		float[] v3 = {0,a,1};
+		float[] v4 = {-1,0,a};
+		float[] v5 = {0,-a,1};
+		float[] v6 = {1,0,a};
+		float[] v7 = {1,0,-a};
+		float[] v8 = {0,-a,-1};
+		float[] v9 = {-1,0,-a};
+		float[] v10 = {-a,-1,0};
+		float[] v11 = {a,-1,0};
+		
+		ArrayList<ArrayList<Float>> triangles = new ArrayList<ArrayList<Float>>();
+
+		triangles.add(makeTriangle(v0,v1,v2));
+		triangles.add(makeTriangle(v3,v2,v1));
+		triangles.add(makeTriangle(v3,v4,v5));
+		triangles.add(makeTriangle(v3,v5,v6));
+		triangles.add(makeTriangle(v0,v7,v8));
+		triangles.add(makeTriangle(v0,v8,v9));
+		triangles.add(makeTriangle(v5,v10,v11));
+		triangles.add(makeTriangle(v8,v11,v10));
+		triangles.add(makeTriangle(v1,v9,v4));
+		triangles.add(makeTriangle(v10,v4,v9));
+		triangles.add(makeTriangle(v2,v6,v7));
+		triangles.add(makeTriangle(v11,v7,v6));
+		triangles.add(makeTriangle(v3,v1,v4));
+		triangles.add(makeTriangle(v3,v6,v2));
+		triangles.add(makeTriangle(v0,v9,v1));
+		triangles.add(makeTriangle(v0,v2,v7));
+		triangles.add(makeTriangle(v8,v10,v9));
+		triangles.add(makeTriangle(v8,v7,v11));
+		triangles.add(makeTriangle(v5,v4,v10));
+		triangles.add(makeTriangle(v5,v11,v6));
+		
+		for(ArrayList<Float> tri : triangles){
+			addTriangle(tri.get(0),tri.get(1),tri.get(2),tri.get(3),tri.get(4),tri.get(5),tri.get(6),tri.get(7),tri.get(8));
+		}
+		
+		
+	}
+	
+	private ArrayList<Float> makeTriangle(float[] a, float[] b, float[] c){
+		ArrayList<Float> triangle = new ArrayList<Float>();
+		for(int i=0; i<3; i++){
+			triangle.add(a[i]);
+		}
+		for(int i=0; i<3; i++){
+			triangle.add(b[i]);
+		}
+		for(int i=0; i<3; i++){
+			triangle.add(c[i]);
+		}
+		
+		return triangle;
 	}
 }
