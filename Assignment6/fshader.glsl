@@ -28,13 +28,13 @@ void main()
     vec3 L = normalize (lPos - vPos);
     vec3 N = normalize (vNorm);
     
-    vec3 R = (float(2) * N * (dot(N,L))) - L;
+    vec3 R = normalize((float(2) * N * (dot(N,L))) - L);
     vec3 V = normalize (pos - vPos);
     
      // calculate components
     vec4 diffuse = lightColor * diffuseColor * (dot(N, L));
     
-    vec4 specular = lightColor * specColor * (pow((dot(R, V)),specExp));
+    vec4 specular = lightColor * specColor * (pow(max((dot(R, V)),0.0),specExp));
     
     // set the final color
     gl_FragColor = diffuse + specular;

@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/cg jars/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/cg jars/gluegen-rt-natives-windows-amd64.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/cg jars/jogl-all.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/cg jars/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/jogl-all.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dave/Desktop/jogl-all-natives-windows-i586.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
